@@ -1,0 +1,11 @@
+p{
+  margin:20px;
+}
+
+.btnSSR.selected{
+  background:rgba(255,174,201,1);
+}
+
+.btn-default{
+  cursor:pointer;
+}
