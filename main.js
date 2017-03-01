@@ -91,7 +91,7 @@ $(window).load(function () {
 	for (var i = 0; i < Names.length; i++) {
         str += '<button type="button" id="' + i + '" class="btn btn-default btnSSR visible ';
         if (!isSelected[i]) str += "un";
-        str += 'selected" title="' + Names[i]["name"] + '"><img src="img/' + i + '.png" width="80"></img></button>';
+        str += 'selected" title="' + Names[i]["name"] + '" style="width:100px"><img src="img/' + i + '.png" width="80"></img><br /><div class="charaname">' + Names[i]["name"] + '</div></button>';
     }
 
 	elem.innerHTML = str;
@@ -155,5 +155,8 @@ $(window).load(function () {
             }
         }
 
+    });
+    $(".togglenamedisp").click(function () {
+        $(".charaname").slideToggle("slow");
     });
 });

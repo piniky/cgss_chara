@@ -2,6 +2,14 @@ p{
   margin:20px;
 }
 
+.btnSSR{
+  white-space: normal;
+  line-height: 1.2;
+  display: inline-block;
+  vertical-align: top;
+  word-break: break-all;
+  font-size: 0.7em;
+}
 .btnSSR.selected{
   background:rgba(255,174,201,1);
 }
