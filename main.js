@@ -1,6 +1,6 @@
 var Names, numSSR, numLimited = 0,
     isSelected, filter = { cu: true, co: true, pa: true, lim: true, nolim: true },
-    table = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+    table = "0123456789abcdefghijklmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 
 
@@ -39,24 +39,21 @@ function calc() {
 }
 
 function tweet() {
-    var str = "", str2 = "";
-    var char = 0;
-    for (var i = 0; i < 50; i++) {
-        if (isSelected[i]) char += Math.pow(2, 49 - i);
-    }
-    str += char.toString(36);
-    str = ("0000000000" + str).slice(-10);
-    char = 0;
-    for (var i = 0; i < Names.length - 50; i++) {
-        if (isSelected[i + 50]) char += Math.pow(2, 49 - i);
-    }
-    str2 += char.toString(36);
-    str += str2;
+    var str = "";
+	for (var i = 0; i < Math.ceil(numSSR / 6); i++) {
+		var ch = 0;
+		for (var j = 0; j < 6; j++) {
+			if (isSelected[6 * i + j]){
+				ch += 1 << (5 - j);
+			}
+		}
+		str += table[ch];
+	}
 
     var res = calc();
     var sum = res[0] + res[1];
     var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(makeResultString(res[0], res[1]));
-    url += '&url=http%3A%2F%2Fpiniky-lab.net%2Fcgss%2Fchara%2Findex.html?ssr=' + str;
+    url += '&url=http%3A%2F%2Fpiniky-lab.net%2Fcgss%2Fchara%2Findex.html?ssr2=' + str;
     url += '&hashtags=%E3%83%87%E3%83%AC%E3%82%B9%E3%83%86%E6%89%80%E6%9C%89%E7%8E%87';
     window.open(url);
 }
@@ -80,7 +77,7 @@ $(window).load(function () {
 
             for (var j = 0; j < 6; j++) {
                 if (6 * i + j < numSSR){
-                    isSelected[6 * i + j] = (ch & (1 << j) ? true : false);
+                    isSelected[6 * i + j] = (ch & (1 << (5 - j)) ? true : false);
                 }
             }            
         }
@@ -108,8 +105,8 @@ $(window).load(function () {
     var str = '';
     for (var i = 0; i < Names.length; i++) {
         str += '<button type="button" id="' + i + '" class="btn btn-default btnSSR visible ';
-        if (!isSelected[i]) str += "un";
-        str += 'selected" title="' + Names[i]["name"] + '" style="width:100px"><img style="display: none;" class="img_normal" src="img/normal/' + i + '.png" width="80" /><img class="img_awaken" src="img/awaken/' + i + '.png" width="80" /><br /><div class="charaname">' + Names[i]["name"] + '</div></button>';
+    if (isSelected[i]) str += "selected";    
+        str += '" title="' + Names[i]["name"] + '" style="width:100px"><img style="display: none;" class="img_normal" src="img/normal/' + i + '.png" width="80" /><img class="img_awaken" src="img/awaken/' + i + '.png" width="80" /><br /><div class="charaname">' + Names[i]["name"] + '</div></button>';
     }
 
     elem.innerHTML = str;
@@ -123,7 +120,7 @@ $(window).load(function () {
     }
     $(".btnSSR").click(function () {
 		isSelected[this.id] = !isSelected[this.id];
-		$(this).removeClass("selected");
+		$(this).toggleClass("selected");
         calc();
     });
     $(".selectall").click(function () {
