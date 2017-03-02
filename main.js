@@ -122,13 +122,8 @@ $(window).load(function () {
         else $("#" + i).addClass("pa");
     }
     $(".btnSSR").click(function () {
-        if (isSelected[this.id]) {
-            $(this).removeClass("selected");
-            isSelected[this.id] = false;
-        } else {
-            $(this).addClass("selected");
-            isSelected[this.id] = true;
-        }
+		isSelected[this.id] = !isSelected[this.id];
+		$(this).removeClass("selected");
         calc();
     });
     $(".selectall").click(function () {
